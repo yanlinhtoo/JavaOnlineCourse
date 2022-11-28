@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hostmdy.ppm.domain.Backlog;
 import com.hostmdy.ppm.domain.Project;
 import com.hostmdy.ppm.repository.ProjectRepository;
 import com.hostmdy.ppm.service.ProjectService;
@@ -24,6 +25,11 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public Project saveOrUpdate(Project project) {
 		// TODO Auto-generated method stub
+		Backlog backlog = new Backlog();
+		backlog.setProjectIdentifier(project.getProjectIdentifier());
+		project.setBacklog(backlog);
+	    backlog.setProject(project);
+		
 		return projectRepository.save(project);
 	}
 
@@ -37,6 +43,19 @@ public class ProjectServiceImpl implements ProjectService{
 	public Optional<Project> findById(Long id) {
 		// TODO Auto-generated method stub
 		return projectRepository.findById(id);
+	}
+
+	@Override
+	public Optional<Project> findByIdentifier(String identifier) {
+		// TODO Auto-generated method stub
+		return projectRepository.findByProjectIdentifier(identifier);
+	}
+
+	@Override
+	public void deleteById(Long id) {
+		// TODO Auto-generated method stub
+		projectRepository.deleteById(id);
+		
 	}
 	
 	

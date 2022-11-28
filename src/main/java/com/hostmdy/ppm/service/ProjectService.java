@@ -12,5 +12,9 @@ public interface ProjectService {
 	List<Project> findAll();
 	
 	Optional<Project>  findById(Long id);
+	
+	Optional<Project> findByIdentifier(String identifier);
+	
+	void deleteById(Long id);
 
 }

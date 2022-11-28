@@ -3,12 +3,18 @@ package com.hostmdy.ppm.domain;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.validation.constraints.NotBlank;
@@ -43,25 +49,29 @@ public class Project {
 	private LocalDate endDate;
 	private LocalDate createdAt;
 	private LocalDate updatedAt;
-	public Project(Long id, String projectName, String projectIdentifier, String description, LocalDate startDate,
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	@JsonIgnore
+	private User user;
+	
+	@OneToOne(mappedBy = "project",cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Backlog backlog;
+	
+	public Project(@NotBlank(message = "ProjectName should not be blank") String projectName,
+			@NotBlank(message = "ProjectIdentifier should not be blank") @Size(min = 4, max = 8, message = "4 to 8 charactor should be included") String projectIdentifier,
+			@NotBlank(message = "Description should not be blank") String description, LocalDate startDate,
 			LocalDate endDate) {
 		super();
-		this.id = id;
 		this.projectName = projectName;
 		this.projectIdentifier = projectIdentifier;
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
-	public Project(String projectName, String projectIdentifier, String description, LocalDate startDate,
-			LocalDate endDate) {
-		super();
-		this.projectName = projectName;
-		this.projectIdentifier = projectIdentifier;
-		this.description = description;
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
+	
 	
 	@PrePersist
 	void OnCreate() {
