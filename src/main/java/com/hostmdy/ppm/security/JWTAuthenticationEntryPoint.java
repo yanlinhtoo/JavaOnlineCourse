@@ -20,12 +20,12 @@ public class JWTAuthenticationEntryPoint implements AuthenticationEntryPoint{
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 		// TODO Auto-generated method stub
-		InvalidLoginResponse loginResponse = new InvalidLoginResponse();
-		String jsonLoginResponse = new Gson().toJson(loginResponse);
+		InvalidLoginResponse invalidLoginResponse = new InvalidLoginResponse();
+		String jsonInvalidResponse = new Gson().toJson(invalidLoginResponse);
 		
 		response.setContentType("application/json");
 		response.setStatus(401);
-		response.getWriter().print(jsonLoginResponse);
+		response.getWriter().print(jsonInvalidResponse);
 	}
 
 }

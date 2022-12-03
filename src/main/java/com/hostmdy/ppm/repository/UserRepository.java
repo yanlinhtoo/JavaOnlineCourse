@@ -9,5 +9,7 @@ import com.hostmdy.ppm.domain.User;
 public interface UserRepository extends CrudRepository<User,Long>{
 	
 	Optional<User> findByUsername(String username);
+	
+	Optional<User> getUserById(Long id);
 
 }

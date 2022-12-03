@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hostmdy.ppm.domain.User;
 import com.hostmdy.ppm.repository.UserRepository;
@@ -30,5 +31,15 @@ public class CustomUserDetailsService implements UserDetailsService{
 		
 		return userOptional.get();
 	}
+	
+	@Transactional
+	public User loadUserById(Long id) {
+		Optional<User> userOptional = userRepository.getUserById(id);
+		
+		if(userOptional.isEmpty())
+			throw new UsernameNotFoundException("User with id="+id+" is not found");
+		
+		return userOptional.get();
+	} 
 
 }

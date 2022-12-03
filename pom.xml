@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0-SNAPSHOT</version>
+		<version>3.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hostmdy</groupId>
@@ -47,11 +47,6 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
-		<dependency>
-			<groupId>jakarta.validation</groupId>
-			<artifactId>jakarta.validation-api</artifactId>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -68,8 +63,8 @@
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

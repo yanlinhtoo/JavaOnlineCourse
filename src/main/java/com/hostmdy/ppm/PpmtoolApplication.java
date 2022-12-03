@@ -31,15 +31,15 @@ public class PpmtoolApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		// TODO Auto-generated method stub
-		Project project1 = new Project("OnlineShop","oshop","This is onlineshop",LocalDate.now(),LocalDate.of(2023,Month.FEBRUARY,24));
-		
-		User user1 = new User("min@gmail.com","MinThuKyaw","1234");
-		
-		project1.setUser(user1);
-		user1.getProjects().add(project1);
-		
-		userService.saveOrUpdateUser(user1);
-		projectService.saveOrUpdate(project1);
+//		Project project1 = new Project("OnlineShop","oshop","This is onlineshop",LocalDate.now(),LocalDate.of(2023,Month.FEBRUARY,24));
+//		
+//		User user1 = new User("min@gmail.com","MinThuKyaw","1234");
+//		
+//		project1.setUser(user1);
+//		user1.getProjects().add(project1);
+//		
+//		userService.createUser(user1);
+//		projectService.saveOrUpdate(project1);
 		
 		
 	}
