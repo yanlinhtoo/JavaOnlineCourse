@@ -61,9 +61,9 @@ public class SecurityConfig{
 			.requestMatchers(PUBLIC_MATCHER).permitAll()
 			.requestMatchers(SIGNUP_URL).permitAll()
 //			.requestMatchers(H2_URL).permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.authenticationProvider(authenticationProvider());
+			.anyRequest().authenticated();
+			
+	    http.authenticationProvider(authenticationProvider());
 		http.addFilterBefore(jwtAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
 		
 		return http.build();
