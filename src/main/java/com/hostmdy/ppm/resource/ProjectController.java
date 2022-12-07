@@ -1,5 +1,6 @@
 package com.hostmdy.ppm.resource;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,34 +42,25 @@ public class ProjectController {
 	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> createProject(@Valid @RequestBody Project project,BindingResult result){
+	public ResponseEntity<?> createProject(@Valid @RequestBody Project project,BindingResult result,Principal principal){
 		ResponseEntity<?> responseErrorObject = mapErrorService.validate(result);
 		
 		if(responseErrorObject != null)
 			return responseErrorObject;
 			
-		Project createdProject = projectService.saveOrUpdate(project);
+		Project createdProject = projectService.saveOrUpdate(project,principal.getName());
 		return new ResponseEntity<Project>(createdProject, HttpStatus.CREATED);
 		
 	}
 	
 	@GetMapping("/all")
-	public List<Project> findAll() {
-		return projectService.findAll();
-	}
-	
-	@GetMapping("/id/{id}")
-	public ResponseEntity<?> findById(@PathVariable Long id) {
-		Optional<Project> projectOptional = projectService.findById(id);
-		
-		if(projectOptional.isEmpty())
-			return new ResponseEntity<String>("Project with id="+id+" is not found",HttpStatus.NOT_FOUND);
-		return new ResponseEntity<Project>(projectOptional.get(), HttpStatus.OK);
+	public List<Project> findAll(Principal principal) {
+		return projectService.findAll(principal.getName());
 	}
 	
 	@GetMapping("/identifier/{identifier}")
-	public ResponseEntity<?> findByIdentifier(@PathVariable String identifier){
-		Optional<Project> projectOptional = projectService.findByIdentifier(identifier);
+	public ResponseEntity<?> findByIdentifier(@PathVariable String identifier,Principal principal){
+		Optional<Project> projectOptional = projectService.findByIdentifier(identifier,principal.getName());
 		
 		if(projectOptional.isEmpty())
 			return new ResponseEntity<String>("Project with identifier="+identifier+" is not found", HttpStatus.NOT_FOUND);
@@ -76,12 +68,12 @@ public class ProjectController {
 		return new ResponseEntity<Project>(projectOptional.get(),HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/id/{id}")
-	public ResponseEntity<String> deleteById(@PathVariable Long id){
+	@DeleteMapping("/identifier/{identifier}")
+	public ResponseEntity<String> deleteById(@PathVariable String identifier,Principal principal){
 		
-		projectService.deleteById(id);
+		projectService.flashDelete(identifier,principal.getName());
 		
-		return new ResponseEntity<String>("Deleted id="+id,HttpStatus.OK);
+		return new ResponseEntity<String>("Deleted id="+identifier,HttpStatus.OK);
 		
 	}
 	

@@ -40,5 +40,7 @@ public class Backlog {
 	@JsonIgnore
 	private List<ProjectTask> projectTasks = new ArrayList<>();
 	
+	private String status = "active";
+	
 
 }

@@ -60,6 +60,9 @@ public class Project {
 	@JsonIgnore
 	private Backlog backlog;
 	
+	private String projectLeader;
+	private String status = "active";
+	
 	public Project(@NotBlank(message = "ProjectName should not be blank") String projectName,
 			@NotBlank(message = "ProjectIdentifier should not be blank") @Size(min = 4, max = 8, message = "4 to 8 charactor should be included") String projectIdentifier,
 			@NotBlank(message = "Description should not be blank") String description, LocalDate startDate,
