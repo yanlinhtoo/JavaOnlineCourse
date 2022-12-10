@@ -66,29 +66,35 @@ public class ProjectServiceImpl implements ProjectService{
 			
 			return projectRepository.save(project);
 			
-		}else {
-			Backlog backlog = new Backlog();
-			backlog.setProjectIdentifier(projectIdentifier);
-			
-			project.setProjectIdentifier(projectIdentifier);
-			
-			//project - user
-			project.setUser(user);
-			project.setProjectLeader(username);
-			user.getProjects().add(project);
-			
-			//project - backlog
-			project.setBacklog(backlog);
-			backlog.setProject(project);
-			
-			return projectRepository.save(project);
 		}
+		Backlog backlog = new Backlog();
+		backlog.setProjectIdentifier(projectIdentifier);
+		backlog.setPTSequence(0);
+
+		project.setProjectIdentifier(projectIdentifier);
+
+		// project - user
+		project.setUser(user);
+		project.setProjectLeader(username);
+		user.getProjects().add(project);
+
+		// project - backlog
+		project.setBacklog(backlog);
+		backlog.setProject(project);
+
+		return projectRepository.save(project);
+		
 	}
 
 	@Override
 	public List<Project> findAll(String username) {
 		// TODO Auto-generated method stub
-		return projectRepository.findByProjectLeader(username);
+		List<Project> activeProjectList = projectRepository.findByProjectLeader(username)
+			.stream()
+			.filter(p -> p.getStatus().equals("active"))
+			.toList();
+		
+		return activeProjectList;
 	}
 
 	@Override

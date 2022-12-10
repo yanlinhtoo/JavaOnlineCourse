@@ -1,23 +1,19 @@
 package com.hostmdy.ppm.resource;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hostmdy.ppm.domain.Project;
@@ -25,7 +21,6 @@ import com.hostmdy.ppm.service.MapValidationErrorService;
 import com.hostmdy.ppm.service.ProjectService;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api/project")
@@ -43,10 +38,10 @@ public class ProjectController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<?> createProject(@Valid @RequestBody Project project,BindingResult result,Principal principal){
-		ResponseEntity<?> responseErrorObject = mapErrorService.validate(result);
+		Optional<ResponseEntity<?>> responseErrorObjectOpt = mapErrorService.validate(result);
 		
-		if(responseErrorObject != null)
-			return responseErrorObject;
+		if(responseErrorObjectOpt.isPresent())
+			return responseErrorObjectOpt.get();
 			
 		Project createdProject = projectService.saveOrUpdate(project,principal.getName());
 		return new ResponseEntity<Project>(createdProject, HttpStatus.CREATED);
@@ -54,8 +49,13 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/all")
-	public List<Project> findAll(Principal principal) {
-		return projectService.findAll(principal.getName());
+	public ResponseEntity<?> findAll(Principal principal) {
+		List<Project> projectList = projectService.findAll(principal.getName());
+		
+		if(projectList.isEmpty())
+			return new ResponseEntity<String>("No Projects Found in your Account",HttpStatus.NOT_FOUND);
+		
+		return new ResponseEntity<List<Project>>(projectList,HttpStatus.OK);
 	}
 	
 	@GetMapping("/identifier/{identifier}")

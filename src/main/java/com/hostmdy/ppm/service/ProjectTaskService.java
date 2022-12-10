@@ -6,14 +6,14 @@ import java.util.Optional;
 import com.hostmdy.ppm.domain.ProjectTask;
 
 public interface ProjectTaskService {
-
-	ProjectTask saveOrUpdate(ProjectTask projectTask);
 	
-	List<ProjectTask> findAll();
+	Optional<ProjectTask> findByProjectSequence(String identifier,String projectSequence,String username);
 	
-	Optional<ProjectTask> findByProjectSequence(String projectSequence);
+	List<ProjectTask> findAll(String identifier,String username);
 	
-	Optional<ProjectTask> findById(Long id);
+	ProjectTask createProjectTask(String projectIdentifier,ProjectTask projectTask,String username);
 	
-	ProjectTask addProjectToBacklog(String projectIdentifier,ProjectTask projectTask);
+	ProjectTask updateProjectTask(String identifier,ProjectTask projectTask,String projectSequence, String username);
+	
+	void deleteProjectTask(String identifier,String projectSequence,String username);
 }

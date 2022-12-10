@@ -70,10 +70,10 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest,BindingResult result){
 		
-		ResponseEntity<?> errorResponse = mapErrorService.validate(result);
+		Optional<ResponseEntity<?>> responseErrorObjectOpt = mapErrorService.validate(result);
 		
-		if(errorResponse != null)
-			return errorResponse;
+		if(responseErrorObjectOpt.isPresent())
+			return responseErrorObjectOpt.get();
 		
 		Authentication authentication = authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword())
@@ -91,10 +91,10 @@ public class UserController {
 	public ResponseEntity<?> createUser(@Valid @RequestBody User user,BindingResult result){
 		userValidator.validate(user, result);
 		
-		ResponseEntity<?> errorResponse = mapErrorService.validate(result);
+		Optional<ResponseEntity<?>> responseErrorObjectOpt = mapErrorService.validate(result);
 		
-		if(errorResponse != null)
-			return errorResponse;
+		if(responseErrorObjectOpt.isPresent())
+			return responseErrorObjectOpt.get();
 		
 		User createdUser = userService.createUser(user);
 		
