@@ -86,11 +86,11 @@ public class UserController {
 		
 		
 	}
-	
+	//Creating user
 	@PostMapping("/create")
 	public ResponseEntity<?> createUser(@Valid @RequestBody User user,BindingResult result){
-		userValidator.validate(user, result);
 		
+		userValidator.validate(user, result);//check pw length and confirm pw
 		Optional<ResponseEntity<?>> responseErrorObjectOpt = mapErrorService.validate(result);
 		
 		if(responseErrorObjectOpt.isPresent())
